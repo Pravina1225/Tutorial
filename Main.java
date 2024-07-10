@@ -12,26 +12,38 @@ public class Main {
         System.out.print("Enter the second string: ");
         String str2 = scanner.nextLine();
 
-        Set<Character> matchingCharacters = getMatchingCharacters(str1, str2);
-        System.out.println("Matching characters: " + matchingCharacters);
+        Set<Character> matchingCharacters = getMatchingCharactersIgnoreCase(str1, str2);
+        System.out.println("Matching characters (case-insensitive): " + matchingCharacters);
 
         scanner.close();
     }
 
-    public static Set<Character> getMatchingCharacters(String str1, String str2) {
+    public static Set<Character> getMatchingCharactersIgnoreCase(String str1, String str2) {
         Set<Character> set1 = new HashSet<>();
         Set<Character> set2 = new HashSet<>();
+        Set<Character> resultSet = new HashSet<>();
 
         for (char c : str1.toCharArray()) {
-            set1.add(c);
+            set1.add(Character.toLowerCase(c));
         }
 
         for (char c : str2.toCharArray()) {
-            set2.add(c);
+            set2.add(Character.toLowerCase(c));
         }
 
-        set1.retainAll(set2);
+        // Find matching characters (case-insensitive)
+        for (char c : str1.toCharArray()) {
+            if (set2.contains(Character.toLowerCase(c))) {
+                resultSet.add(c);
+            }
+        }
 
-        return set1;
+        for (char c : str2.toCharArray()) {
+            if (set1.contains(Character.toLowerCase(c))) {
+                resultSet.add(c);
+            }
+        }
+
+        return resultSet;
     }
 }
